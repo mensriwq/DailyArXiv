@@ -1,4 +1,6 @@
 # dir
+papers.db
+
 __pycache__/
 .vscode/
 
@@ -14,6 +16,7 @@ core*
 *.pickle
 *.pyc
 *.txt
+!prompts/*.txt
 
 *.py[cod]
 *$py.class
@@ -166,6 +169,8 @@ dmypy.json
 
 # Cython debug symbols
 cython_debug/
+AGENTS.md
+paper_tools.py
 
 # PyCharm
 #  JetBrains specific template is maintained in a separate JetBrains.gitignore that can

@@ -13,16 +13,9 @@ from easydict import EasyDict
 def remove_duplicated_spaces(text: str) -> str:
     return " ".join(text.split())
 
-def request_paper_with_arXiv_api(keyword: str, max_results: int, link: str = "OR") -> List[Dict[str, str]]:
-    # keyword = keyword.replace(" ", "+")
-    assert link in ["OR", "AND"], "link should be 'OR' or 'AND'"
-    keyword = "\"" + keyword + "\""
-    url = "http://export.arxiv.org/api/query?search_query=ti:{0}+{2}+abs:{0}&max_results={1}&sortBy=lastUpdatedDate".format(keyword, max_results, link)
-    url = urllib.parse.quote(url, safe="%/:=&?~#+!$,;'@()*[]")
-    response = urllib.request.urlopen(url).read().decode('utf-8')
-    feed = feedparser.parse(response)
-
-    # NOTE default columns: Title, Authors, Abstract, Link, Tags, Comment, Date
+def _parse_arxiv_response(response_text: str) -> List[Dict[str, str]]:
+    """Parse arXiv API XML response into a list of paper dicts."""
+    feed = feedparser.parse(response_text)
     papers = []
     for entry in feed.entries:
         entry = EasyDict(entry)
@@ -46,6 +39,88 @@ def request_paper_with_arXiv_api(keyword: str, max_results: int, link: str = "OR
         papers.append(paper)
     return papers
 
+
+def build_arxiv_query(schema: dict) -> str:
+    """Compile a query_schema dict into an arXiv API search_query string.
+
+    If ``raw`` is present, it is returned as-is, bypassing all structured fields.
+    This is the escape hatch for full arXiv query syntax (ANDNOT, nested groups, etc.).
+
+    Example structured schema:
+        {
+            "core": [{"all": ["formal", "verification"]}, {"all": ["theorem", "proving"]}],
+            "context": {"terms": ["llm", "neural"], "field": "all", "match": "any"},
+            "categories": ["cs.LO", "cs.AI"]
+        }
+
+    Yields:
+        %28all:formal+AND+all:verification+OR+all:theorem+AND+all:proving%29+AND+%28all:llm+OR+all:neural%29+AND+%28cat:cs.LO+OR+cat:cs.AI%29
+    """
+    if "raw" in schema:
+        return schema["raw"]
+
+    def _enc(term: str) -> str:
+        if " " in term:
+            return "%22" + term.replace(" ", "+") + "%22"
+        return term
+
+    def _join(parts: list, sep: str) -> str:
+        return sep.join(parts)
+
+    def _wrap(parts: list) -> str:
+        joined = _join(parts, "+OR+")
+        return f"%28{joined}%29" if len(parts) > 1 else joined
+
+    # Core: AND within each item, OR across items
+    core_parts = []
+    for item in schema["core"]:
+        field, terms = next(iter(item.items()))
+        core_parts.append(_join([f"{field}:{_enc(t)}" for t in terms], "+AND+"))
+    query_parts = [_wrap(core_parts)]
+
+    # Context
+    ctx = schema.get("context")
+    if ctx:
+        f = ctx["field"]
+        ctx_parts = [f"{f}:{_enc(t)}" for t in ctx["terms"]]
+        match = ctx.get("match", "any")
+        query_parts.append(_join(ctx_parts, "+AND+") if match == "all" else _wrap(ctx_parts))
+
+    # Categories: OR across categories, AND with rest
+    cats = schema.get("categories")
+    if cats:
+        query_parts.append(_wrap([f"cat:{c}" for c in cats]))
+
+    return _join(query_parts, "+AND+")
+
+
+def keywords_to_query_schema(keywords: list) -> dict:
+    """Convert a list of sub_keywords into a minimal query_schema.
+
+    Multi-word keywords become phrase matches; single-word keywords match as-is.
+    Uses all: field for broadest coverage.
+    """
+    core = []
+    for kw in keywords:
+        core.append({"ti": [kw]})
+        core.append({"abs": [kw]})
+    return {
+        "core": core,
+        "categories": ["cs", "stat"]
+    }
+
+
+def request_paper_with_schema(schema: dict, max_results: int) -> List[Dict[str, str]]:
+    """Fetch papers from arXiv using a query_schema dict."""
+    query = build_arxiv_query(schema)
+    url = (
+        "https://export.arxiv.org/api/query?"
+        f"search_query={query}&max_results={max_results}&sortBy=lastUpdatedDate"
+    )
+    url = urllib.parse.quote(url, safe="%/:=&?~#+!$,;'@()*[]")
+    response = urllib.request.urlopen(url, timeout=60).read().decode('utf-8')
+    return _parse_arxiv_response(response)
+
 def filter_tags(papers: List[Dict[str, str]], target_fileds: List[str]=["cs", "stat"]) -> List[Dict[str, str]]:
     # filtering tags: only keep the papers in target_fileds
     results = []
@@ -56,26 +131,6 @@ def filter_tags(papers: List[Dict[str, str]], target_fileds: List[str]=["cs", "s
                 results.append(paper)
                 break
     return results
-
-def get_daily_papers_by_keyword_with_retries(keyword: str, column_names: List[str], max_result: int, link: str = "OR", retries: int = 6) -> List[Dict[str, str]]:
-    for _ in range(retries):
-        papers = get_daily_papers_by_keyword(keyword, column_names, max_result, link)
-        if len(papers) > 0: return papers
-        else:
-            print("Unexpected empty list, retrying...")
-            time.sleep(60 * 30) # wait for 30 minutes
-    # failed
-    return None
-
-def get_daily_papers_by_keyword(keyword: str, column_names: List[str], max_result: int, link: str = "OR") -> List[Dict[str, str]]:
-    # get papers
-    papers = request_paper_with_arXiv_api(keyword, max_result, link) # NOTE default columns: Title, Authors, Abstract, Link, Tags, Comment, Date
-    # NOTE filtering tags: only keep the papers in cs field
-    # TODO filtering more
-    papers = filter_tags(papers)
-    # select columns for display
-    papers = [{column_name: paper[column_name] for column_name in column_names} for paper in papers]
-    return papers
 
 def generate_table(papers: List[Dict[str, str]], ignore_keys: List[str] = []) -> str:
     formatted_papers = []

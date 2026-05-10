@@ -1,47 +1,60 @@
-name: Update
+name: Update Daily Papers
 
 on:
-  label:
-    types:
-      - created # for test
   schedule:
-      - cron: '30 16 * * 0-4' # 00:30 Beijing time every Monday to Friday
+    - cron: '0 16 * * *' # 00:00 Beijing time daily
+  workflow_dispatch: # manual trigger
+
+concurrency:
+  group: daily-update
+  cancel-in-progress: false
 
 permissions:
   contents: write
-  issues: write 
 
 jobs:
-  update_daily_papers:
+  update:
     runs-on: ubuntu-latest
+    env:
+      PYTHONUNBUFFERED: 1
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.9'
-
-    - name: Install dependencies
-      run: pip install -r requirements.txt
-
-    - name: Update papers
-      run: |
-        python main.py
-
-    - name: Commit and push changes
-      uses: github-actions-x/commit@v2.9
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        push-branch: 'master'
-        commit-message: '✏️ Update papers automatically.'
-        force-add: 'true'
-        files: README.md .github/ISSUE_TEMPLATE.md
-        name: Zezhishao
-        email: 864453277@qq.com
-
-    - name: Create an issue to notify
-      uses: JasonEtco/create-an-issue@v2
+    - name: Download latest papers.db from Release
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        gh release download database -p papers.db || echo "No existing database found or download failed, starting fresh."
+
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+
+    - run: pip install -r requirements.txt openai arxiv-to-prompt
+
+    - run: python main.py fetch
+
+    - run: python main.py screen
+      env:
+        DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+
+    - run: python main.py summarize
+      env:
+        DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+
+    - run: python main.py readme
+
+    - name: Upload papers.db to Release
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        gh release view database || gh release create database --title "Database" --notes "Database storage"
+        gh release upload database papers.db --clobber
+
+    - uses: stefanzweifel/git-auto-commit-action@v5
+      with:
+        commit_message: 'daily papers update'
+        file_pattern: 'README.md'
+        add_options: '--force'
+        commit_user_name: 'DailyArXiv Bot'
+        commit_user_email: 'bot@dailyarxiv.local'
