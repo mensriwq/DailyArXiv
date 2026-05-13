@@ -32,6 +32,11 @@ jobs:
 
     - run: pip install -r requirements.txt openai arxiv-to-prompt
 
+    - name: Migrate section names for merged topics
+      run: |
+        sqlite3 papers.db "UPDATE papers SET section = 'Context & Memory Management' WHERE section IN ('Online Context Selection & Query-Aware Agent Inference', 'Planner-Based Context Retrieval & Veracity Preservation', 'Conversation Retrieval & Relevance-Gated Context', 'Agent Context & Task Management', 'Event-Driven Sparse Agent Memory & Noise Filtering');"
+        sqlite3 papers.db "UPDATE papers SET section = 'Agent Memory Architecture & State Tracking' WHERE section IN ('Agent Cognitive Architecture & Information Distribution', 'Hybrid Multi-Layer Memory Architectures', 'Agent World Models & Explicit State Tracking');"
+
     - run: python main.py fetch
 
     - run: python main.py screen

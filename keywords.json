@@ -4,468 +4,74 @@
         "max_papers_per_section": 15
     },
     "sections": {
-        "Online Context Selection & Query-Aware Agent Inference": {
-            "description": "Online dynamic context synthesis \u2014 not offline compression, but per-query computation of what enters the context window. Query-aware inference, virtual memory for LLM agents, dynamic memory block retrieval, online context selection (not truncation). Covers Q-LLM, MemGPT-style OS scheduling, inner monologue retrieval, content-addressable memory.",
+        "Context & Memory Management": {
+            "description": "How should an LLM agent decide what to keep in its limited context window? We're interested in approaches that dynamically select, retrieve, or compress information at inference time — this includes per-query context synthesis, conversation history retrieval with relevance gating, automatic summarization and compaction of past turns, hierarchical task decomposition, and event-driven memory that preserves milestone moments while filtering noise. The common thread is agent-level context management, not model-internal mechanisms like KV cache or attention heads.",
             "max_results_per_query": 200,
-            "max_papers_per_section": 30,
+            "max_papers_per_section": 40,
             "query_schema": {
                 "core": [
-                    {
-                        "all": [
-                            "query-aware",
-                            "inference"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "online",
-                            "context",
-                            "selection"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "virtual",
-                            "memory",
-                            "agent"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "dynamic",
-                            "memory",
-                            "retrieval"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "content-addressable",
-                            "memory"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "inner",
-                            "monologue",
-                            "retrieval"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "online",
-                            "context",
-                            "synthesis"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "per-query",
-                            "context"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "dynamic",
-                            "context",
-                            "injection"
-                        ]
-                    }
+                    {"all": ["context", "window"]},
+                    {"all": ["context", "selection"]},
+                    {"all": ["context", "retrieval"]},
+                    {"all": ["context", "compression"]},
+                    {"all": ["context", "summarization"]},
+                    {"all": ["memory", "retrieval"]},
+                    {"all": ["conversation", "history"]},
+                    {"all": ["task", "decomposition"]},
+                    {"all": ["token", "budget"]}
                 ],
                 "context": {
-                    "terms": [
-                        "llm",
-                        "language model",
-                        "agent"
-                    ],
+                    "terms": ["llm", "language model", "agent"],
                     "field": "all",
                     "match": "any"
                 },
-                "categories": [
-                    "cs.AI",
-                    "cs.MA"
-                ]
+                "categories": ["cs.AI", "cs.MA", "cs.CL", "cs.LG"]
+            }
+        },
+        "Agent Memory Architecture & State Tracking": {
+            "description": "How should an agent organize its memory across different timescales and abstraction levels? We're looking for work that proposes or evaluates structured memory architectures — for instance, separating fast-changing working state, episodic traces of what happened, and slower-changing semantic or procedural knowledge. Also in scope: agents that maintain explicit internal world models, track environment state independently of trajectory logs, handle belief states or POMDPs, and manage dependencies between pieces of state. The key distinction from context management is that we're interested in the architecture of memory — how information is layered and organized — not just how to select or compress it.",
+            "max_results_per_query": 200,
+            "max_papers_per_section": 40,
+            "query_schema": {
+                "core": [
+                    {"all": ["memory", "architecture"]},
+                    {"all": ["episodic", "memory"]},
+                    {"all": ["semantic", "memory"]},
+                    {"all": ["working", "memory"]},
+                    {"all": ["cognitive", "architecture"]},
+                    {"all": ["world", "model"]},
+                    {"all": ["state", "tracking"]},
+                    {"all": ["belief", "state"]},
+                    {"all": ["tripartite", "memory"]}
+                ],
+                "context": {
+                    "terms": ["llm", "language model", "agent"],
+                    "field": "all",
+                    "match": "any"
+                },
+                "categories": ["cs.AI", "cs.MA", "cs.CL", "cs.LG"]
             }
         },
         "Retrieval Heads & Selective Attention in Agent Context": {
-            "description": "Microscopic attention head analysis applied to agent-level context management. Retrieval heads that specialize in finding key information across long sequences. Non-uniform KV cache management \u2014 selective retention based on head function. NOT about model training \u2014 about inference-time head-aware context selection.",
+            "description": "Microscopic attention head analysis applied to agent-level context management. Retrieval heads that specialize in finding key information across long sequences. Non-uniform KV cache management — selective retention based on head function. NOT about model training — about inference-time head-aware context selection.",
             "max_results_per_query": 200,
             "max_papers_per_section": 20,
             "query_schema": {
                 "core": [
-                    {
-                        "all": [
-                            "retrieval",
-                            "heads"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "attention",
-                            "head",
-                            "analysis"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "selective",
-                            "kv",
-                            "cache"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "non-uniform",
-                            "cache"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "head-aware",
-                            "context"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "attention",
-                            "head",
-                            "retrieval"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "sparse",
-                            "attention",
-                            "context"
-                        ]
-                    }
+                    {"all": ["retrieval", "heads"]},
+                    {"all": ["attention", "head", "analysis"]},
+                    {"all": ["selective", "kv", "cache"]},
+                    {"all": ["non-uniform", "cache"]},
+                    {"all": ["head-aware", "context"]},
+                    {"all": ["attention", "head", "retrieval"]},
+                    {"all": ["sparse", "attention", "context"]}
                 ],
                 "context": {
-                    "terms": [
-                        "llm",
-                        "transformer",
-                        "agent",
-                        "inference"
-                    ],
+                    "terms": ["llm", "transformer", "agent", "inference"],
                     "field": "all",
                     "match": "any"
                 },
-                "categories": [
-                    "cs.AI",
-                    "cs.CL",
-                    "cs.LG"
-                ]
-            }
-        },
-        "Planner-Based Context Retrieval & Veracity Preservation": {
-            "description": "Using trained or prompted planners (RL, heuristic) to select the minimal sufficient context subset. Leave-one-out evaluation for relevance. Dynamic prefix tuning \u2014 injecting context as learnable vectors rather than text. NOT about compression \u2014 about selecting what to include with zero information loss on selected items.",
-            "max_results_per_query": 200,
-            "max_papers_per_section": 20,
-            "query_schema": {
-                "core": [
-                    {
-                        "all": [
-                            "minimal",
-                            "sufficient",
-                            "subset"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "planner-based",
-                            "retrieval"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "dynamic",
-                            "prefix",
-                            "tuning"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "context",
-                            "selection",
-                            "planner"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "veracity-preserving",
-                            "retrieval"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "leave-one-out",
-                            "context"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "prefix-based",
-                            "context",
-                            "injection"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "reinforcement",
-                            "learning",
-                            "context",
-                            "selection"
-                        ]
-                    }
-                ],
-                "context": {
-                    "terms": [
-                        "llm",
-                        "language model",
-                        "agent",
-                        "transformer"
-                    ],
-                    "field": "all",
-                    "match": "any"
-                },
-                "categories": [
-                    "cs.AI",
-                    "cs.MA",
-                    "cs.CL"
-                ]
-            }
-        },
-        "Conversation Retrieval & Relevance-Gated Context": {
-            "description": "Relevance-based retrieval of conversation history for LLM agents \u2014 query-conditioned context selection, multi-granularity retrieval (full/high-level/summary/skip), adaptive context windows, dynamic prompt assembly, tiered memory recall. NOT about model architecture or KV cache \u2014 about agent-level retrieval strategies.",
-            "max_results_per_query": 200,
-            "max_papers_per_section": 30,
-            "query_schema": {
-                "core": [
-                    {
-                        "all": [
-                            "conversation",
-                            "history",
-                            "retrieval"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "dialogue",
-                            "context",
-                            "selection"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "query-conditioned",
-                            "context"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "relevance-gated",
-                            "memory"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "adaptive",
-                            "context",
-                            "window"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "multi-granularity",
-                            "retrieval"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "tiered",
-                            "memory",
-                            "recall"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "dynamic",
-                            "prompt",
-                            "assembly"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "retrieval-augmented",
-                            "conversation"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "context",
-                            "pruning"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "memory",
-                            "retrieval",
-                            "agent"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "selective",
-                            "context",
-                            "agent"
-                        ]
-                    }
-                ],
-                "context": {
-                    "terms": [
-                        "llm",
-                        "language model",
-                        "agent"
-                    ],
-                    "field": "all",
-                    "match": "any"
-                },
-                "categories": [
-                    "cs.AI",
-                    "cs.MA"
-                ]
-            }
-        },
-        "Agent Context & Task Management": {
-            "description": "Context window management, automatic compaction/summarization, hierarchical task decomposition, intent/stack-based memory, working memory for LLM agents. Covers context compression, conversation summarization, sub-task summarization, and memory-efficient agent architectures.",
-            "max_results_per_query": 200,
-            "max_papers_per_section": 30,
-            "query_schema": {
-                "core": [
-                    {
-                        "all": [
-                            "context",
-                            "compression"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "context",
-                            "compaction"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "context",
-                            "summarization"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "context",
-                            "management"
-                        ],
-                        "match": "all"
-                    },
-                    {
-                        "all": [
-                            "conversation",
-                            "summarization"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "task",
-                            "decomposition"
-                        ],
-                        "match": "all"
-                    },
-                    {
-                        "all": [
-                            "hierarchical",
-                            "planning"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "hierarchical",
-                            "task"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "working",
-                            "memory"
-                        ],
-                        "match": "all"
-                    },
-                    {
-                        "all": [
-                            "episodic",
-                            "memory"
-                        ],
-                        "match": "all"
-                    },
-                    {
-                        "all": [
-                            "memory",
-                            "compaction"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "memory",
-                            "augmented"
-                        ],
-                        "match": "all"
-                    },
-                    {
-                        "all": [
-                            "subtask",
-                            "summarization"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "incremental",
-                            "summarization"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "conversation",
-                            "compression"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "token",
-                            "budget"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "prompt",
-                            "compression"
-                        ]
-                    }
-                ],
-                "context": {
-                    "terms": [
-                        "llm",
-                        "language model",
-                        "agent",
-                        "gpt",
-                        "transformer"
-                    ],
-                    "field": "all",
-                    "match": "any"
-                },
-                "categories": [
-                    "cs.AI",
-                    "cs.CL",
-                    "cs.LG",
-                    "cs.MA"
-                ]
+                "categories": ["cs.AI", "cs.CL", "cs.LG"]
             }
         },
         "Formal Verification": {
@@ -474,54 +80,18 @@
             "max_papers_per_section": 30,
             "query_schema": {
                 "core": [
-                    {
-                        "all": [
-                            "formal",
-                            "verification"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "program",
-                            "verification"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "model",
-                            "checking"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "theorem",
-                            "proving"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "proof",
-                            "search"
-                        ]
-                    }
+                    {"all": ["formal", "verification"]},
+                    {"all": ["program", "verification"]},
+                    {"all": ["model", "checking"]},
+                    {"all": ["theorem", "proving"]},
+                    {"all": ["proof", "search"]}
                 ],
                 "context": {
-                    "terms": [
-                        "llm",
-                        "neural",
-                        "language model",
-                        "deep learning",
-                        "transformer"
-                    ],
+                    "terms": ["llm", "neural", "language model", "deep learning", "transformer"],
                     "field": "all",
                     "match": "any"
                 },
-                "categories": [
-                    "cs.LO",
-                    "cs.PL",
-                    "cs.AI",
-                    "cs.SE"
-                ]
+                "categories": ["cs.LO", "cs.PL", "cs.AI", "cs.SE"]
             }
         },
         "Autonomous Agent & Tool Evolution": {
@@ -530,661 +100,75 @@
             "max_papers_per_section": 20,
             "query_schema": {
                 "core": [
-                    {
-                        "all": [
-                            "skill",
-                            "discovery"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "skill",
-                            "extraction"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "skill",
-                            "learning"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "skill",
-                            "composition"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "tool",
-                            "creation"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "tool",
-                            "composition"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "tool",
-                            "learning"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "agent",
-                            "self-improvement"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "agent",
-                            "evolution"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "autonomous",
-                            "agent"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "self-evolving",
-                            "agent"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "automatic",
-                            "tool"
-                        ]
-                    }
+                    {"all": ["skill", "discovery"]},
+                    {"all": ["skill", "extraction"]},
+                    {"all": ["skill", "learning"]},
+                    {"all": ["skill", "composition"]},
+                    {"all": ["tool", "creation"]},
+                    {"all": ["tool", "composition"]},
+                    {"all": ["tool", "learning"]},
+                    {"all": ["agent", "self-improvement"]},
+                    {"all": ["agent", "evolution"]}
                 ],
                 "context": {
-                    "terms": [
-                        "llm",
-                        "language model",
-                        "large model",
-                        "gpt"
-                    ],
+                    "terms": ["llm", "language model", "large model", "gpt"],
                     "field": "all",
                     "match": "any"
                 },
-                "categories": [
-                    "cs.AI",
-                    "cs.CL",
-                    "cs.MA",
-                    "cs.RO"
-                ]
-            }
-        },
-        "Event-Driven Sparse Agent Memory & Noise Filtering": {
-            "description": "Selective, event-driven memory for agents where information is sparse and trajectories contain high noise. NOT about uniform compression of all turns \u2014 about identifying and preserving only milestone events. Importance-aware retention, salience-based filtering, landmark detection in agent trajectories, noise-resistant episodic memory, sparse-reward context selection, gist-based compression, trajectory condensation via key events.",
-            "max_results_per_query": 200,
-            "max_papers_per_section": 20,
-            "query_schema": {
-                "core": [
-                    {
-                        "all": [
-                            "event-driven",
-                            "memory"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "selective",
-                            "retention",
-                            "agent"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "importance-aware",
-                            "context"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "salience",
-                            "filtering",
-                            "trajectory"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "landmark",
-                            "event",
-                            "compression"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "sparse",
-                            "information",
-                            "context"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "gist",
-                            "memory",
-                            "agent"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "trajectory",
-                            "condensation"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "key",
-                            "event",
-                            "summarization"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "noise",
-                            "filtering",
-                            "agent",
-                            "memory"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "episodic",
-                            "selection",
-                            "agent"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "milestone",
-                            "compression"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "sparse",
-                            "reward",
-                            "context"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "information",
-                            "density",
-                            "context"
-                        ]
-                    }
-                ],
-                "context": {
-                    "terms": [
-                        "llm",
-                        "language model",
-                        "agent",
-                        "trajectory"
-                    ],
-                    "field": "all",
-                    "match": "any"
-                },
-                "categories": [
-                    "cs.AI",
-                    "cs.MA",
-                    "cs.CL"
-                ]
+                "categories": ["cs.AI", "cs.CL", "cs.MA", "cs.RO"]
             }
         },
         "Cognitive Science": {
-            "description": "Cognitive science and neuroscience insights that inform AI/LLM design \u2014 working memory mechanisms, metacognition, self-monitoring, human-like reasoning patterns applied to neural architectures.",
+            "description": "Cognitive science and neuroscience insights that inform AI/LLM design — working memory mechanisms, metacognition, self-monitoring, human-like reasoning patterns applied to neural architectures.",
             "max_results_per_query": 100,
             "max_papers_per_section": 15,
             "query_schema": {
                 "core": [
-                    {
-                        "all": [
-                            "working",
-                            "memory"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "metacognition"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "cognitive",
-                            "architecture"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "episodic",
-                            "memory"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "self-monitoring"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "reasoning",
-                            "pattern"
-                        ]
-                    }
+                    {"all": ["working", "memory"]},
+                    {"all": ["metacognition"]},
+                    {"all": ["cognitive", "architecture"]},
+                    {"all": ["episodic", "memory"]},
+                    {"all": ["self-monitoring"]},
+                    {"all": ["reasoning", "pattern"]}
                 ],
                 "context": {
-                    "terms": [
-                        "llm",
-                        "neural",
-                        "transformer",
-                        "deep learning",
-                        "language model",
-                        "attention"
-                    ],
+                    "terms": ["llm", "neural", "transformer", "deep learning", "language model", "attention"],
                     "field": "all",
                     "match": "any"
                 },
-                "categories": [
-                    "cs.AI",
-                    "cs.CL",
-                    "cs.LG",
-                    "cs.NE"
-                ]
-            }
-        },
-        "Agent Cognitive Architecture & Information Distribution": {
-            "description": "Agent cognitive architectures focusing on how information is layered and distributed. Topics include the separation of episodic memory (trajectories), state memory (world models, key-value state), and semantic memory (rules, guidelines). Tripartite memory models, explicit state tracking in LLM agents, decoupled memory structures.",
-            "max_results_per_query": 200,
-            "max_papers_per_section": 30,
-            "query_schema": {
-                "core": [
-                    {
-                        "all": [
-                            "tripartite",
-                            "memory",
-                            "agent"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "episodic",
-                            "semantic",
-                            "agent"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "state",
-                            "memory",
-                            "agent"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "world",
-                            "model",
-                            "agent",
-                            "memory"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "cognitive",
-                            "architecture",
-                            "agent",
-                            "memory"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "information",
-                            "distribution",
-                            "agent"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "decoupled",
-                            "memory",
-                            "agent"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "hierarchical",
-                            "memory",
-                            "architecture"
-                        ]
-                    }
-                ],
-                "context": {
-                    "terms": [
-                        "llm",
-                        "language model",
-                        "agent"
-                    ],
-                    "field": "all",
-                    "match": "any"
-                },
-                "categories": [
-                    "cs.AI",
-                    "cs.MA",
-                    "cs.CL"
-                ]
-            }
-        },
-        "Hybrid Multi-Layer Memory Architectures": {
-            "description": "Agent cognitive architectures focusing on the explicit stratification of memory: working/state memory, episodic memory (trajectories), and semantic/procedural memory. Tripartite memory models, memory unification, cognitive science inspired agent memory.",
-            "max_results_per_query": 150,
-            "max_papers_per_section": 20,
-            "query_schema": {
-                "core": [
-                    {
-                        "all": [
-                            "tripartite",
-                            "memory",
-                            "agent"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "episodic",
-                            "semantic",
-                            "agent"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "working",
-                            "memory",
-                            "episodic",
-                            "agent"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "procedural",
-                            "semantic",
-                            "episodic"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "multi-layer",
-                            "memory",
-                            "agent"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "cognitive",
-                            "architecture",
-                            "agent",
-                            "memory"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "memory",
-                            "consolidation",
-                            "agent"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "dual-process",
-                            "memory",
-                            "agent"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "memory",
-                            "stratification"
-                        ]
-                    }
-                ],
-                "context": {
-                    "terms": [
-                        "llm",
-                        "language model",
-                        "agent",
-                        "autonomous"
-                    ],
-                    "field": "all",
-                    "match": "any"
-                },
-                "categories": [
-                    "cs.AI",
-                    "cs.MA",
-                    "cs.CL"
-                ]
-            }
-        },
-        "Agent World Models & Explicit State Tracking": {
-            "description": "Research on how LLM agents maintain internal world models, track explicit environment states, handle phantom dependencies, and manage state transitions independent of episodic trajectory logs. Decoupled epistemic states, belief state tracking for agents, POMDPs in LLM agents.",
-            "max_results_per_query": 150,
-            "max_papers_per_section": 20,
-            "query_schema": {
-                "core": [
-                    {
-                        "all": [
-                            "world",
-                            "model",
-                            "agent"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "state",
-                            "tracking",
-                            "agent"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "belief",
-                            "state",
-                            "llm"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "decoupled",
-                            "epistemic",
-                            "state"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "environment",
-                            "state",
-                            "agent"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "state",
-                            "memory",
-                            "llm"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "transition",
-                            "dynamics",
-                            "agent"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "internal",
-                            "state",
-                            "representation",
-                            "agent"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "pomdp",
-                            "llm"
-                        ]
-                    }
-                ],
-                "context": {
-                    "terms": [
-                        "llm",
-                        "language model",
-                        "agent",
-                        "interactive"
-                    ],
-                    "field": "all",
-                    "match": "any"
-                },
-                "categories": [
-                    "cs.AI",
-                    "cs.MA",
-                    "cs.LG"
-                ]
+                "categories": ["cs.AI", "cs.CL", "cs.LG", "cs.NE"]
             }
         },
         "Agent Code Verification, Harness Self-Evolution & AutoResearch Pipelines": {
-            "description": "Preventing agent-level code cheating during task execution (NOT training-time reward hacking): agents that exploit grader/test flaws (hardcoding, deleting failing tests, patching verify()), specification gaming in code benchmarks (TRACE/SSC/Posterior-GRPO at agent level), self-evolving agent frameworks with verification gating (Meta Harness, harness-as-code evolution, hardware-in-the-loop feedback), AutoResearch full pipelines (data→clean→train→eval loop), code benchmark contamination & integrity (DetectLeak, LessLeak-Bench), and verification debt in autonomous coding systems. Covers AI coding framework development, NPU-targeted code agent self-evolution, code model post-training (SFT/RL) anti-cheating, and end-to-end automated code research pipelines.",
+            "description": "Preventing agent-level code cheating during task execution (NOT training-time reward hacking): agents that exploit grader/test flaws (hardcoding, deleting failing tests, patching verify()), specification gaming in code benchmarks, self-evolving agent frameworks with verification gating (Meta Harness, harness-as-code evolution, hardware-in-the-loop feedback), AutoResearch full pipelines (data→clean→train→eval loop), code benchmark contamination and integrity, and verification debt in autonomous coding systems.",
             "max_results_per_query": 150,
             "max_papers_per_section": 25,
             "query_schema": {
                 "core": [
-                    {
-                        "all": [
-                            "specification",
-                            "gaming"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "code",
-                            "agent",
-                            "exploit"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "grader",
-                            "manipulation"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "agent",
-                            "bypass",
-                            "verification"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "self-evolving",
-                            "code",
-                            "agent"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "self-improving",
-                            "code",
-                            "verification"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "harness",
-                            "evolution"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "automated",
-                            "code",
-                            "research"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "self-driven",
-                            "code",
-                            "improvement"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "benchmark",
-                            "contamination",
-                            "code"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "code",
-                            "benchmark",
-                            "leakage"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "code",
-                            "post-training",
-                            "verification"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "end-to-end",
-                            "code",
-                            "pipeline"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "verification",
-                            "debt"
-                        ]
-                    },
-                    {
-                        "all": [
-                            "hardware-in-the-loop",
-                            "code",
-                            "agent"
-                        ]
-                    }
+                    {"all": ["code", "agent", "exploit"]},
+                    {"all": ["specification", "gaming"]},
+                    {"all": ["benchmark", "contamination"]},
+                    {"all": ["benchmark", "leakage"]},
+                    {"all": ["grader", "manipulation"]},
+                    {"all": ["verification", "debt"]},
+                    {"all": ["self-evolving", "code"]},
+                    {"all": ["harness", "evolution"]},
+                    {"all": ["automated", "research", "pipeline"]}
                 ],
                 "context": {
-                    "terms": [
-                        "llm",
-                        "language model",
-                        "code",
-                        "agent",
-                        "verification",
-                        "benchmark",
-                        "generation"
-                    ],
+                    "terms": ["llm", "language model", "agent", "benchmark", "verification"],
                     "field": "all",
                     "match": "any"
                 },
-                "categories": [
-                    "cs.SE",
-                    "cs.AI",
-                    "cs.LG",
-                    "cs.MA",
-                    "cs.PL"
-                ]
+                "categories": ["cs.SE", "cs.AI", "cs.LG", "cs.MA", "cs.PL"]
+            }
+        },
+        "Formal Methods for Kernel & Operator Optimization": {
+            "description": "We're interested in a specific methodology for operator / kernel optimization: a formal specification defines correct behavior, then automated search finds the most efficient low-level implementation, and formal verification (equivalence checking, theorem proving) guarantees correctness. In scope: superoptimization of any target (GPU kernels, tensor programs, assembly, bytecode, circuits, RTL), equivalence checking used for optimization, verified compilation and kernel synthesis, LLM-driven kernel/code generation with formal correctness guarantees, formal verification of floating-point or numerical code, and any approach that combines formal methods with performance optimization at the operator or low level. The target domain doesn't matter — it can be GPU kernels, WebAssembly, quantum circuits, or RTL — as long as the workflow involves formal correctness arguments plus optimization. Out of scope: general formal verification of existing code without an optimization component, algorithm-level optimization without operator/kernel concerns, or ML-based optimization with no formal correctness argument.",
+            "max_results_per_query": 100,
+            "max_papers_per_section": 20,
+            "query_schema": {
+                "raw": "%28all:superoptimization+OR+all:%22equivalence+checking%22%29+AND+%28cat:cs.LO+OR+cat:cs.PL+OR+cat:cs.AR+OR+cat:cs.SE+OR+cat:cs.AI%29"
             }
         }
     }

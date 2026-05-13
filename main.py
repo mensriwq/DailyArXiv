@@ -186,7 +186,10 @@ def fetch_papers():
         max_kw = config.get("max_results_per_query", CONFIG_DEFAULTS["max_results_per_query"])
 
         schema = config.get("query_schema") or keywords_to_query_schema(config["sub_keywords"])
-        print(f"  Query schema: {len(schema['core'])} core groups, categories={schema.get('categories', [])}")
+        if "raw" in schema:
+            print(f"  Query schema: raw query ({len(schema['raw'])} chars), categories={schema.get('categories', [])}")
+        else:
+            print(f"  Query schema: {len(schema.get('core', []))} core groups, categories={schema.get('categories', [])}")
 
         for attempt in range(4):
             try:

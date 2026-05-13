@@ -3,6 +3,7 @@ papers.db
 
 __pycache__/
 .vscode/
+workspace/
 
 # file
 *.npz
