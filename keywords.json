@@ -140,27 +140,11 @@
             }
         },
         "Agent Code Verification, Harness Self-Evolution & AutoResearch Pipelines": {
-            "description": "Preventing agent-level code cheating during task execution (NOT training-time reward hacking): agents that exploit grader/test flaws (hardcoding, deleting failing tests, patching verify()), specification gaming in code benchmarks, self-evolving agent frameworks with verification gating (Meta Harness, harness-as-code evolution, hardware-in-the-loop feedback), AutoResearch full pipelines (data→clean→train→eval loop), code benchmark contamination and integrity, and verification debt in autonomous coding systems.",
-            "max_results_per_query": 150,
+            "description": "How do LLM agents cheat, and how can formal verification or better evaluation design prevent it? We're interested in: reward hacking during RL training (agents that exploit grader/test flaws — hardcoding answers, deleting failing tests, patching verify()), specification gaming in code benchmarks, code agent exploits of verifiers and evaluation frameworks, benchmark contamination and leakage, and verification debt in autonomous coding systems. Also in scope: self-evolving agent frameworks with verification gating, harness-as-code evolution, and mitigation strategies against reward hacking (robust optimization, reward shaping). Out of scope: general AI safety not specific to code agents, or security exploitation of production systems (pentesting, vulnerability scanning) that doesn't involve agent-level reward gaming.",
+            "max_results_per_query": 100,
             "max_papers_per_section": 25,
             "query_schema": {
-                "core": [
-                    {"all": ["code", "agent", "exploit"]},
-                    {"all": ["specification", "gaming"]},
-                    {"all": ["benchmark", "contamination"]},
-                    {"all": ["benchmark", "leakage"]},
-                    {"all": ["grader", "manipulation"]},
-                    {"all": ["verification", "debt"]},
-                    {"all": ["self-evolving", "code"]},
-                    {"all": ["harness", "evolution"]},
-                    {"all": ["automated", "research", "pipeline"]}
-                ],
-                "context": {
-                    "terms": ["llm", "language model", "agent", "benchmark", "verification"],
-                    "field": "all",
-                    "match": "any"
-                },
-                "categories": ["cs.SE", "cs.AI", "cs.LG", "cs.MA", "cs.PL"]
+                "raw": "%28all:%22reward+hacking%22+OR+all:%22specification+gaming%22+OR+all:%22benchmark+contamination%22+OR+all:%22benchmark+leakage%22+OR+all:%22verification+debt%22+OR+%28all:code+AND+all:agent+AND+%28all:exploit+OR+all:cheat+OR+all:hack+OR+all:game%29%29%29+AND+%28cat:cs.AI+OR+cat:cs.LG+OR+cat:cs.SE+OR+cat:cs.MA+OR+cat:cs.CL%29"
             }
         },
         "Formal Methods for Kernel & Operator Optimization": {
